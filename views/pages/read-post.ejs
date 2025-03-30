@@ -1,0 +1,74 @@
+
+<!-- Add padding-top to prevent overlap -->
+<div class="pt-20 container max-w-5xl mx-auto p-6 flex flex-col lg:flex-row items-center justify-between min-h-screen gap-8">
+    <!-- Left Sidebar (Social Icons - Large Screens) -->
+    <div class="hidden lg:flex flex-col items-center space-y-6 sticky top-24">
+        <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-facebook fa-2x"></i></a>
+        <a href="#" class="text-gray-500 hover:text-blue-400"><i class="fab fa-twitter fa-2x"></i></a>
+        <a href="#" class="text-gray-500 hover:text-pink-500"><i class="fab fa-instagram fa-2x"></i></a>
+        <a href="#" class="text-gray-500 hover:text-pink-500"><i class="fas fa-share fa-2x"></i></a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="w-full max-w-3xl mx-auto flex-grow">
+        <h1 class="text-4xl font-extrabold text-blue-700 text-center leading-tight">
+            How Travel Writer and Vlogger Overcomes Self-Doubt
+        </h1>
+        <img src="/images/hero.jpg" alt="Post Image" class="w-full h-64 object-cover rounded-lg mt-4">
+        <p class="text-gray-600 text-lg mt-2 text-center">
+            By <span class="font-semibold">John Doe</span> | <span>March 30, 2025</span>
+        </p>
+        <p class="text-lg text-gray-700 mt-6 leading-relaxed text-justify">
+            Many content creators struggle with self-doubt. Whether it's imposter syndrome or comparison, it can be overwhelming...
+        </p>
+
+        <!-- Code Snippet -->
+        <div class="bg-gray-900 text-white p-4 rounded-lg mt-6 overflow-x-auto">
+            <pre class="text-sm">
+<code class="language-python">
+# My daily content creation schedule
+def daily_routine():
+    morning = "Research & Learning"
+    afternoon = "Content Creation"
+    evening = "Editing & Publishing"
+    
+    return f"Morning: {morning}, Afternoon: {afternoon}, Evening: {evening}"
+
+print(daily_routine())
+</code>
+            </pre>
+        </div>
+
+        <p class="text-lg text-gray-700 mt-6 text-justify">
+            Scheduling my tasks like this ensures I stay productive and avoid burnout. The key is consistency.
+        </p>
+
+        <div class="lg:hidden flex justify-center space-x-6 mt-6">
+            <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-facebook fa-2x"></i></a>
+            <a href="#" class="text-gray-500 hover:text-blue-400"><i class="fab fa-twitter fa-2x"></i></a>
+            <a href="#" class="text-gray-500 hover:text-pink-500"><i class="fab fa-instagram fa-2x"></i></a>
+        </div>
+
+        <div class="mt-6 text-center">
+            <button onclick="sharePost()" class="px-6 py-2 bg-blue-500 text-white rounded-lg">
+                <i class="fas fa-share"></i> Share Post
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Posts Section -->
+<div class="max-w-5xl mx-auto mt-12">
+    <h2 class="text-3xl font-bold text-blue-700 mb-4 text-center">Recent Posts</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% recentPosts.forEach(post => { %>
+            <div class="bg-transparent rounded-lg article">
+                <img src="<%= post.image %>" alt="Recent Post Image" class="w-full h-40 object-cover rounded-lg">
+                <div class="p-4">
+                    <h3 class="text-xl font-semibold mt-3 text-blue-600"><%= post.title %></h3>
+                    <p class="text-lg text-gray-500">By <%= post.author %></p>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-3xl font-bold text-blue-600 mb-4">Create New Article</h1>
+        
+        <form id="articleForm" action="/submit-article" method="POST" enctype="multipart/form-data">
+            <input type="text" name="title" id="title" placeholder="Article Title" class="w-full p-3 border rounded-lg mb-4" required>
+            <input type="text" name="author" id="author" placeholder="Author Name" class="w-full p-3 border rounded-lg mb-4" required>
+            <input type="text" name="category" id="category" placeholder="Category" class="w-full p-3 border rounded-lg mb-4">
+            <input type="text" name="tags" id="tags" placeholder="Tags (comma separated)" class="w-full p-3 border rounded-lg mb-4">
+            
+            <!-- Rich Text Editor -->
+            <div id="editor" class="h-64 mb-4 bg-white border rounded-lg"></div>
+            <input type="hidden" name="content" id="hiddenContent">
+            
+            <button type="button" id="previewBtn" class="w-full bg-gray-500 text-white p-3 rounded-lg font-semibold">Preview Article</button>
+            <button type="submit" class="w-full bg-blue-600 text-white p-3 rounded-lg font-semibold mt-2">Publish Article</button>
+        </form>
+    </div>
+
+    <!-- Preview Modal -->
+    <div id="previewModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-6 rounded-lg shadow-md max-w-2xl w-full">
+            <h2 id="previewTitle" class="text-2xl font-bold text-blue-600 mb-2"></h2>
+            <p id="previewAuthor" class="text-gray-600 mb-2"></p>
+            <p id="previewCategory" class="text-gray-500 mb-2"></p>
+            <p id="previewTags" class="text-gray-400 mb-4"></p>
+            <div id="previewContent" class="border p-4 rounded-lg"></div>
+            <button id="closePreview" class="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg">Close</button>
+        </div>
+    </div>
+
+    <script>
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+            placeholder: 'Write your article here...',
+            modules: {
+                toolbar: [
+                    [{ header: [1, 2, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                    ['blockquote', 'code-block'],
+                    ['link', 'image'],
+                    ['clean']
+                ]
+            }
+        });
+
+        document.querySelector('#articleForm').addEventListener('submit', function() {
+            document.getElementById('hiddenContent').value = quill.root.innerHTML;
+        });
+
+        document.getElementById('previewBtn').addEventListener('click', function() {
+            document.getElementById('previewTitle').textContent = document.getElementById('title').value;
+            document.getElementById('previewAuthor').textContent = "By: " + document.getElementById('author').value;
+            document.getElementById('previewCategory').textContent = "Category: " + document.getElementById('category').value;
+            document.getElementById('previewTags').textContent = "Tags: " + document.getElementById('tags').value;
+            document.getElementById('previewContent').innerHTML = quill.root.innerHTML;
+            document.getElementById('previewModal').classList.remove('hidden');
+        });
+
+        document.getElementById('closePreview').addEventListener('click', function() {
+            document.getElementById('previewModal').classList.add('hidden');
+        });
+    </script>

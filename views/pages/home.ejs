@@ -1,12 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= title %></title>
-  <link rel="stylesheet" href="/public/css/style.css">
-</head>
-<body>
-  <h1>Welcome to Fastify Blog 🚀</h1>
-</body>
-</html>
+<div class="container mx-auto p-6">
+    <!-- Featured Post -->
+    <div class="grid lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 bg-white rounded-lg overflow-hidden">
+            <img src="/images/hero.jpg" alt="Featured Image" class="w-full h-auto object-cover rounded-lg">
+            <div class="p-6">
+                <h2 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mt-4 text-blue-500">
+                    How Travel Writer and Vlogger Overcomes Self-Doubt
+                </h2>
+            </div>
+        </div>
+
+        <!-- Staff Picks -->
+        <div class="bg-transparent p-6 rounded-lg">
+            <h3 class="text-xl md:text-2xl font-bold mb-4">Staff Picks</h3>
+            <ul class="space-y-3">
+                <% let picks = [
+                    { title: "How to Write the Perfect Email", color: "blue-500" },
+                    { title: "Grammarly in Google Docs", color: "green-600" },
+                    { title: "Adding Words to Your Dictionary", color: "yellow-600" },
+                    { title: "Grammarly + Medium Collaboration", color: "red-600" }
+                ];
+                picks.forEach(pick => { %>
+                    <li class="border-l-4 border-<%= pick.color %> pl-4">
+                        <a href="#" class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mt-4 text-<%= pick.color %>">
+                            <%= pick.title %>
+                        </a>
+                    </li>
+                <% }) %>
+            </ul>
+        </div>
+    </div>
+
+    <!-- More Articles -->
+    <h2 class="text-2xl font-bold mt-12 mb-6">Articles</h2>
+    <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% posts.forEach(post => { %>
+            <div class="bg-transparent rounded-lg article">
+                <img src="<%= post.image %>" alt="Post Image" class="w-full h-48 object-cover rounded-lg">
+                <div class="p-4">
+                    <h3 class="text-xl font-bold mt-3 text-blue-500"><%= post.title %></h3>
+                    <p class="text-lg text-gray-500">Lorem ipsum, dolor sit amet consectetur.</p>
+                    
+                    <!-- Read More Button -->
+                    <a href="/post/<%= post.id %>" class="mt-4 inline-block px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700">
+                        Read More
+                    </a>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+    
+
+    <!-- Read More Button -->
+    <div class="text-center mt-8">
+        <a href="/articles" class="bg-blue-500 hover:bg-blue-700 text-white text-lg font-bold py-3 px-6 rounded-lg shadow-lg">
+            Read More Articles
+        </a>
+    </div>
+</div>
+
