@@ -3,124 +3,113 @@ const path = require("path");
 const fastifyStatic = require("@fastify/static");
 const fastifyView = require("@fastify/view");
 const ejs = require("ejs");
-const fs = require('fs');
-const util = require('util');
-const multer = require('fastify-multer');
+const multer = require("fastify-multer");
+const mongoose = require("mongoose");
+require("dotenv").config();
 
-// ✅ Register EJS Template Engine (Only Once)
+// Connect to MongoDB
+mongoose
+  .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch((err) => console.error(err));
+
+// Define Schema & Model
+const ArticleSchema = new mongoose.Schema({
+  title: String,
+  author: String,
+  category: String,
+  tags: [String],
+  content: String,
+  image: String, // Add an image field for articles
+});
+
+const Article = mongoose.model("Article", ArticleSchema);
+
+// ✅ Register EJS Template Engine
 fastify.register(fastifyView, {
-    engine: { ejs: ejs },
-    root: path.join(__dirname, "views"), // Ensure this is correct
-    layout: "layout.ejs", // Ensure this file exists inside `views/`
+  engine: { ejs: ejs },
+  root: path.join(__dirname, "views"),
+  layout: "layout.ejs",
 });
 
-// ✅ Register Fastify Static (for serving images, CSS, JS)
+// ✅ Register Fastify Static for public files
 fastify.register(fastifyStatic, {
-    root: path.join(__dirname, "public"),
-    prefix: "/", // Ensures static files are served from `/public`
+  root: path.join(__dirname, "public"),
+  prefix: "/",
 });
 
-// ✅ Home Route (Render `home.ejs`)
-fastify.get("/", async (request, reply) => {
-    const posts = [
-        { id: 1, title: "First Blog Post", image: "/images/hero.jpg" },
-        { id: 2, title: "Second Blog Post", image: "/images/hero.jpg" },
-        { id: 3, title: "Third Blog Post", image: "/images/hero.jpg" }
-    ];
-
+// ✅ Home Route - Fetch Articles
+fastify.get("/", async (req, reply) => {
+  try {
+    const posts = await Article.find().limit(6); // Get 6 latest articles
     return reply.view("layout.ejs", { currentPage: "pages/home.ejs", posts });
+  } catch (err) {
+    reply.status(500).send({ error: "Error fetching articles" });
+  }
 });
 
-fastify.get('/articles', async (req, reply) => {
-    const articles = [
-        { id: 1, title: "Breaking News", author: "John Doe", date: "March 30, 2025", excerpt: "This is a short preview of the article...", image: "/images/hero.jpg" },
-        { id: 2, title: "Tech Innovations", author: "Jane Smith", date: "March 28, 2025", excerpt: "Latest advancements in technology...", image: "/images/hero.jpg" }
-    ];
-    
-    return reply.view('layout.ejs', { 
-        currentPage: "pages/articles.ejs",
-        articles 
-    });
+// ✅ Articles Page - Fetch All Articles
+fastify.get("/articles", async (req, reply) => {
+  try {
+    const articles = await Article.find();
+    return reply.view("layout.ejs", { currentPage: "pages/articles.ejs", articles });
+  } catch (err) {
+    reply.status(500).send({ error: "Error fetching articles" });
+  }
 });
 
-fastify.get("/post/:id", async (request, reply) => {
-    const post = {
-        title: "How Travel Writer and Vlogger Overcomes Self-Doubt",
-        image: "/images/hero.jpg",
-        author: "John Doe",
-        date: "March 30, 2025",
-        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-    };
+// ✅ API to fetch articles as JSON
+fastify.get("/api/articles", async (req, reply) => {
+  try {
+    const articles = await Article.find();
+    reply.send(articles);
+  } catch (err) {
+    reply.status(500).send({ error: "Error fetching articles" });
+  }
+});
 
-    const recentPosts = [
-        { title: "The Future of AI", image: "/images/hero.jpg", author: "Jane Smith" },
-        { title: "How to Learn Programming", image: "/images/hero.jpg", author: "David Brown" }
-    ];
+// ✅ Single Post Route
+fastify.get("/post/:id", async (req, reply) => {
+  try {
+    const post = await Article.findById(req.params.id);
+    if (!post) return reply.status(404).send({ error: "Post not found" });
 
+    const recentPosts = await Article.find().limit(3);
     return reply.view("layout.ejs", { currentPage: "pages/read-post.ejs", post, recentPosts });
+  } catch (err) {
+    reply.status(500).send({ error: "Error fetching post" });
+  }
 });
 
-// Set up storage for file uploads
-const upload = multer({ dest: 'uploads/' });
-
-// Route to render the create article page
-fastify.get('/publish-article', async (req, reply) => {
-    return reply.view('layout.ejs', { currentPage: "pages/publish-article.ejs" });
+// ✅ Publish Article Page
+fastify.get("/publish-article", async (req, reply) => {
+  return reply.view("layout.ejs", { currentPage: "pages/publish-article.ejs" });
 });
 
+// ✅ Setup Storage for File Uploads
+const upload = multer({ dest: "uploads/" });
 
-// Route to handle article submission
-fastify.post('/submit-article', { preHandler: upload.array('files') }, async (req, reply) => {
-    try {
-        const { title, author, category, tags, content } = req.body;
-        const uploadedFiles = req.files.map(file => ({
-            filename: file.filename,
-            originalname: file.originalname,
-            path: file.path
-        }));
+// ✅ Submit Article Route
+fastify.post("/submit-article", { preHandler: upload.single("image") }, async (req, reply) => {
+  try {
+    const { title, author, category, tags, content } = req.body;
+    const image = req.file ? `/uploads/${req.file.filename}` : "/images/default.jpg";
 
-        // Example: Save article data (Replace with DB logic)
-        const newArticle = {
-            title,
-            author,
-            category,
-            tags,
-            content,
-            files: uploadedFiles,
-            createdAt: new Date()
-        };
+    const newArticle = new Article({ title, author, category, tags, content, image });
+    await newArticle.save();
 
-        console.log('Article received:', newArticle);
-
-        return reply.send({ success: true, message: 'Article submitted successfully', article: newArticle });
-    } catch (error) {
-        console.error('Error submitting article:', error);
-        return reply.status(500).send({ success: false, message: 'Error submitting article' });
-    }
+    return reply.redirect("/articles");
+  } catch (error) {
+    console.error("Error submitting article:", error);
+    return reply.status(500).send({ success: false, message: "Error submitting article" });
+  }
 });
-
-// Route to handle inline image uploads
-fastify.post('/upload-image', { preHandler: upload.single('image') }, async (req, reply) => {
-    try {
-        if (!req.file) {
-            return reply.status(400).send({ success: false, message: 'No file uploaded' });
-        }
-
-        const fileUrl = `/uploads/${req.file.filename}`;
-        return reply.send({ success: true, url: fileUrl });
-    } catch (error) {
-        console.error('Error uploading image:', error);
-        return reply.status(500).send({ success: false, message: 'Error uploading image' });
-    }
-});
-
-module.exports = fastify;
 
 // ✅ Start Server
-fastify.listen({ port: process.env.PORT || 3000, host: '0.0.0.0' }, (err, address) => {
-    if (err) {
-        fastify.log.error(err);
-        process.exit(1);
-    }
-    console.log(`🚀 Server running at ${address}`);
+fastify.listen({ port: process.env.PORT || 3000, host: "0.0.0.0" }, (err, address) => {
+  if (err) {
+    fastify.log.error(err);
+    process.exit(1);
+  }
+  console.log(`🚀 Server running at ${address}`);
 });
