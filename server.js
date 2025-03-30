@@ -43,8 +43,6 @@ fastify.get('/articles', async (req, reply) => {
     });
 });
 
-
-
 fastify.get("/post/:id", async (request, reply) => {
     const post = {
         title: "How Travel Writer and Vlogger Overcomes Self-Doubt",
@@ -62,17 +60,17 @@ fastify.get("/post/:id", async (request, reply) => {
     return reply.view("layout.ejs", { currentPage: "pages/read-post.ejs", post, recentPosts });
 });
 
-
 // Set up storage for file uploads
 const upload = multer({ dest: 'uploads/' });
 
 // Route to render the create article page
-fastify.get('/create-article', async (req, reply) => {
-    return reply.view('/views/pages/create-article.ejs');
+fastify.get('/publish-article', async (req, reply) => {
+    return reply.view('layout.ejs', { currentPage: "pages/publish-article.ejs" });
 });
 
+
 // Route to handle article submission
-fastify.post('/publish-article', { preHandler: upload.array('files') }, async (req, reply) => {
+fastify.post('/submit-article', { preHandler: upload.array('files') }, async (req, reply) => {
     try {
         const { title, author, category, tags, content } = req.body;
         const uploadedFiles = req.files.map(file => ({
@@ -101,8 +99,22 @@ fastify.post('/publish-article', { preHandler: upload.array('files') }, async (r
     }
 });
 
-module.exports = fastify;
+// Route to handle inline image uploads
+fastify.post('/upload-image', { preHandler: upload.single('image') }, async (req, reply) => {
+    try {
+        if (!req.file) {
+            return reply.status(400).send({ success: false, message: 'No file uploaded' });
+        }
 
+        const fileUrl = `/uploads/${req.file.filename}`;
+        return reply.send({ success: true, url: fileUrl });
+    } catch (error) {
+        console.error('Error uploading image:', error);
+        return reply.status(500).send({ success: false, message: 'Error uploading image' });
+    }
+});
+
+module.exports = fastify;
 
 // ✅ Start Server
 fastify.listen({ port: 3000 }, (err, address) => {
