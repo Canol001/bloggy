@@ -58,6 +58,26 @@ fastify.get("/articles", async (req, reply) => {
   }
 });
 
+// ✅ Articles Page - Fetch All Articles
+fastify.get("/contact-us", async (req, reply) => {
+  try {
+    const articles = await Article.find();
+    return reply.view("layout.ejs", { currentPage: "pages/contact.ejs", articles });
+  } catch (err) {
+    reply.status(500).send({ error: "Error Loading" });
+  }
+})
+
+// Search route
+fastify.get('/search', (req, res) => {
+  const query = req.query.query.toLowerCase();
+  const results = articles.filter(article => 
+      article.title.toLowerCase().includes(query) || 
+      article.content.toLowerCase().includes(query)
+  );
+  res.render('search-results', { results, query });
+});
+
 // ✅ API to fetch articles as JSON
 fastify.get("/api/articles", async (req, reply) => {
   try {

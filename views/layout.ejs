@@ -7,119 +7,121 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/quill@1.3.6/dist/quill.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/quill@1.3.6/dist/quill.snow.css" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
     <style>
-        .article{
+        .article {
             padding: 15px;
         }
-        .article:hover{
+        .article:hover {
             background-color: rgba(229, 229, 229, 0.688);
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body class="bg-gray-100 text-gray-900">
     <!-- Navbar -->
-<nav id="navbar" class="sticky top-0 w-full bg-white shadow-md z-50">
-    
-    <div class="container mx-auto px-6 py-6 flex justify-between items-center">
-        <a href="#" class="text-4xl font-bold text-blue-500">Blog</a>
-        <div class="hidden md:flex space-x-6">
-            <a href="/" class="text-2xl text-gray-600 hover:text-blue-500">Home</a>
-            <a href="/articles" class="text-2xl text-gray-600 hover:text-blue-500">Articles</a>
-            <a href="/publish-article" class="text-2xl text-gray-600 hover:text-blue-500">Publish</a>
-            <a href="#" class="text-2xl text-gray-600 hover:text-blue-500">Contact</a>
+    <nav id="navbar" class="sticky top-0 w-full bg-white shadow-md z-50">
+        <div class="container mx-auto px-6 py-6 flex justify-between items-center">
+            <a href="#" class="text-4xl font-bold text-blue-500">Blog</a>
+            <div class="hidden md:flex space-x-6">
+                <a href="/" class="text-2xl text-gray-600 hover:text-blue-500">Home</a>
+                <a href="/articles" class="text-2xl text-gray-600 hover:text-blue-500">Articles</a>
+                <a href="/publish-article" class="text-2xl text-gray-600 hover:text-blue-500">Publish</a>
+                <a href="/contact" class="text-2xl text-gray-600 hover:text-blue-500">Contact</a>
+            </div>
+            <div class="relative hidden md:block">
+                <form action="/search" method="GET">
+                    <input type="text" name="query" placeholder="Search..." class="border text-2xl border-gray-300 rounded-lg px-4 py-2 w-64">
+                </form>
+            </div>
+            <button id="menu-btn" class="md:hidden text-gray-600 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
         </div>
-        <div class="relative hidden md:block">
-            <input type="text" placeholder="Search..." class="border text-2xl border-gray-300 rounded-lg px-4 py-2 w-64">
+        <div id="mobile-menu" class="hidden md:hidden bg-white px-6 py-4 space-y-2">
+            <a href="/" class="block text-gray-600 hover:text-blue-500">Home</a>
+            <a href="/articles" class="block text-gray-600 hover:text-blue-500">Articles</a>
+            <a href="/publish-article" class="block text-gray-600 hover:text-blue-500">Publish</a>
+            <a href="/contact" class="block text-gray-600 hover:text-blue-500">Contact</a>
         </div>
-        <button id="menu-btn" class="md:hidden text-gray-600 focus:outline-none">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-        </button>
-    </div>
-    <div id="mobile-menu" class="hidden md:hidden bg-white px-6 py-4 space-y-2">
-        <a href="/" class="block text-gray-600 hover:text-blue-500">Home</a>
-        <a href="/articles" class="block text-gray-600 hover:text-blue-500">Articles</a>
-        <a href="/publish-article" class="block text-gray-600 hover:text-blue-500">Publish</a>
-        <a href="#" class="block text-gray-600 hover:text-blue-500">Contact</a>
-    </div>
-    <!-- Scroll Progress Bar -->
-    <div id="progress-bar" class="h-1 bg-blue-500 w-0 transition-all"></div>
-</nav>
+        <!-- Scroll Progress Bar -->
+        <div id="progress-bar" class="h-1 bg-blue-500 w-0 transition-all"></div>
+    </nav>
 
-<!-- Add padding to prevent content from being hidden behind the fixed navbar -->
-<div class="pt-[80px]">
-    <%- include(currentPage) %>
-</div>
+    <!-- Add padding to prevent content from being hidden behind the fixed navbar -->
+    <div class="pt-[80px]"> <!-- Added max-width for larger screens -->
+        <%- include(currentPage) %>
+    </div>
 
-<!-- Footer -->
-<footer class="bg-gray-100 text-black mt-12 shadow-lg">
-    <div class="container mx-auto px-6 py-12 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        <!-- About Section -->
-        <div>
-            <h3 class="text-xl font-bold text-black mb-4">About Us</h3>
-            <p class="text-gray-600 text-lg">
-                Welcome to our blog, where we share insightful articles, guides, and tips on various topics. 
-                Stay informed, stay inspired.
-            </p>
-        </div>
-        <!-- Quick Links -->
-        <div>
-            <h3 class="text-xl font-bold text-black mb-4">Quick Links</h3>
-            <ul class="space-y-3">
-                <li><a href="#" class="text-lg text-gray-700 hover:text-blue-500">Home</a></li>
-                <li><a href="#" class="text-lg text-gray-700 hover:text-blue-500">Categories</a></li>
-                <li><a href="#" class="text-lg text-gray-700 hover:text-blue-500">About</a></li>
-                <li><a href="#" class="text-lg text-gray-700 hover:text-blue-500">Contact</a></li>
-                <li><a href="#" class="text-lg text-gray-700 hover:text-blue-500">Privacy Policy</a></li>
-            </ul>
-        </div>
-        <!-- Categories -->
-        <div>
-            <h3 class="text-xl font-bold text-black mb-4">Categories</h3>
-            <ul class="space-y-3">
-                <li><a href="#" class="text-lg text-gray-700 hover:text-green-500">Tech</a></li>
-                <li><a href="#" class="text-lg text-gray-700 hover:text-yellow-500">Lifestyle</a></li>
-                <li><a href="#" class="text-lg text-gray-700 hover:text-red-500">Travel</a></li>
-                <li><a href="#" class="text-lg text-gray-700 hover:text-purple-500">Health</a></li>
-            </ul>
-        </div>
-        <!-- Social Media -->
-        <div>
-            <h3 class="text-xl font-bold text-black mb-4">Follow Us</h3>
-            <div class="flex space-x-4">
-                <a href="#" class="text-gray-600 hover:text-blue-600 text-2xl"><i class="fab fa-facebook"></i></a>
-                <a href="#" class="text-gray-600 hover:text-blue-400 text-2xl"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="text-gray-600 hover:text-pink-500 text-2xl"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="text-gray-600 hover:text-red-500 text-2xl"><i class="fab fa-youtube"></i></a>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 text-black mt-12 shadow-lg">
+        <div class="container mx-auto px-6 py-12 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- About Section -->
+            <div>
+                <h3 class="text-xl font-bold text-black mb-4">About Us</h3>
+                <p class="text-gray-600 text-lg">
+                    Welcome to our blog, where we share insightful articles, guides, and tips on various topics. 
+                    Stay informed, stay inspired.
+                </p>
+            </div>
+            <!-- Quick Links -->
+            <div>
+                <h3 class="text-xl font-bold text-black mb-4">Quick Links</h3>
+                <ul class="space-y-3">
+                    <li><a href="#" class="text-lg text-gray-700 hover:text-blue-500">Home</a></li>
+                    <li><a href="#" class="text-lg text-gray-700 hover:text-blue-500">Categories</a></li>
+                    <li><a href="#" class="text-lg text-gray-700 hover:text-blue-500">About</a></li>
+                    <li><a href="#" class="text-lg text-gray-700 hover:text-blue-500">Contact</a></li>
+                    <li><a href="#" class="text-lg text-gray-700 hover:text-blue-500">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <!-- Categories -->
+            <div>
+                <h3 class="text-xl font-bold text-black mb-4">Categories</h3>
+                <ul class="space-y-3">
+                    <li><a href="#" class="text-lg text-gray-700 hover:text-green-500">Tech</a></li>
+                    <li><a href="#" class="text-lg text-gray-700 hover:text-yellow-500">Lifestyle</a></li>
+                    <li><a href="#" class="text-lg text-gray-700 hover:text-red-500">Travel</a></li>
+                    <li><a href="#" class="text-lg text-gray-700 hover:text-purple-500">Health</a></li>
+                </ul>
+            </div>
+            <!-- Social Media -->
+            <div>
+                <h3 class="text-xl font-bold text-black mb-4">Follow Us</h3>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-600 hover:text-blue-600 text-2xl"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-gray-600 hover:text-blue-400 text-2xl"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-gray-600 hover:text-pink-500 text-2xl"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-gray-600 hover:text-red-500 text-2xl"><i class="fab fa-youtube"></i></a>
+                </div>
             </div>
         </div>
-    </div>
-    <!-- Footer Bottom -->
-    <div class="border-t border-gray-300 mt-8 py-6 text-center text-gray-700">
-        <p>&copy; <span id="year"></span> Blog. All Rights Reserved.</p>
-    </div>
-</footer>
+        <!-- Footer Bottom -->
+        <div class="border-t border-gray-300 mt-8 py-6 text-center text-gray-700">
+            <p>&copy; <span id="year"></span> Blog. All Rights Reserved.</p>
+        </div>
+    </footer>
 
-<script>
-    // Auto-update year
-    document.getElementById('year').textContent = new Date().getFullYear();
+    <script>
+        // Auto-update year
+        document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Toggle mobile menu
-    document.getElementById('menu-btn').addEventListener('click', () => {
-        document.getElementById('mobile-menu').classList.toggle('hidden');
-    });
+        // Toggle mobile menu
+        document.getElementById('menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
 
-    // Scroll Progress Bar
-    window.addEventListener("scroll", function() {
-        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const progress = (scrollTop / scrollHeight) * 100;
-        document.getElementById("progress-bar").style.width = progress + "%";
-    });
-    
-</script>
+        // Scroll Progress Bar
+        window.addEventListener("scroll", function() {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const progress = (scrollTop / scrollHeight) * 100;
+            document.getElementById("progress-bar").style.width = progress + "%";
+        });
+    </script>
 </body>
 </html>
