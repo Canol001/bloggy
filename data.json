@@ -1,0 +1,92 @@
+[
+    {
+      "title": "The Future of AI",
+      "author": "Jane Smith",
+      "category": "Technology",
+      "tags": ["AI", "Machine Learning", "Future"],
+      "content": "Artificial intelligence is evolving rapidly and shaping the future...",
+      "image": "/images/ai.jpg",
+      "createdAt": { "$date": "2025-03-30T02:44:33.738Z" }
+    },
+    {
+      "title": "Top 10 Travel Destinations",
+      "author": "John Doe",
+      "category": "Travel",
+      "tags": ["Tourism", "Adventure", "Destinations"],
+      "content": "Explore the most beautiful places in the world this year...",
+      "image": "/images/travel.jpg",
+      "createdAt": { "$date": "2025-03-28T15:30:12.123Z" }
+    },
+    {
+      "title": "Mastering Web Development",
+      "author": "Emily Johnson",
+      "category": "Programming",
+      "tags": ["Web", "Coding", "JavaScript"],
+      "content": "Learn the latest web development trends and techniques...",
+      "image": "/images/webdev.jpg",
+      "createdAt": { "$date": "2025-03-25T10:15:45.567Z" }
+    },
+    {
+      "title": "Healthy Eating Habits",
+      "author": "Michael Brown",
+      "category": "Health",
+      "tags": ["Nutrition", "Diet", "Wellness"],
+      "content": "Discover how to eat healthily and maintain a balanced diet...",
+      "image": "/images/health.jpg",
+      "createdAt": { "$date": "2025-03-23T08:20:30.890Z" }
+    },
+    {
+      "title": "Investing for Beginners",
+      "author": "Sarah Lee",
+      "category": "Finance",
+      "tags": ["Investing", "Money", "Wealth"],
+      "content": "A complete guide to getting started with investing...",
+      "image": "/images/investing.jpg",
+      "createdAt": { "$date": "2025-03-21T12:00:00.000Z" }
+    },
+    {
+      "title": "Photography Tips for Beginners",
+      "author": "David Williams",
+      "category": "Photography",
+      "tags": ["Cameras", "Editing", "Composition"],
+      "content": "Learn how to take stunning photos with these beginner tips...",
+      "image": "/images/photography.jpg",
+      "createdAt": { "$date": "2025-03-19T14:10:55.321Z" }
+    },
+    {
+      "title": "The Best Books to Read in 2025",
+      "author": "Olivia Martinez",
+      "category": "Books",
+      "tags": ["Reading", "Fiction", "Non-fiction"],
+      "content": "A curated list of must-read books for the year ahead...",
+      "image": "/images/books.jpg",
+      "createdAt": { "$date": "2025-03-17T16:45:22.654Z" }
+    },
+    {
+      "title": "Home Workout Routines",
+      "author": "Chris Wilson",
+      "category": "Fitness",
+      "tags": ["Exercise", "Workout", "Health"],
+      "content": "Stay fit and healthy with these effective home workout routines...",
+      "image": "/images/fitness.jpg",
+      "createdAt": { "$date": "2025-03-15T09:30:10.100Z" }
+    },
+    {
+      "title": "The Evolution of Smartphones",
+      "author": "Sophia Taylor",
+      "category": "Technology",
+      "tags": ["Smartphones", "Tech", "Innovation"],
+      "content": "From the first mobile phone to the latest innovations...",
+      "image": "/images/smartphone.jpg",
+      "createdAt": { "$date": "2025-03-12T20:05:40.789Z" }
+    },
+    {
+      "title": "How to Start a Successful Blog",
+      "author": "Daniel Anderson",
+      "category": "Blogging",
+      "tags": ["Writing", "SEO", "Marketing"],
+      "content": "Step-by-step guide on launching and growing a successful blog...",
+      "image": "/images/blogging.jpg",
+      "createdAt": { "$date": "2025-03-10T11:55:33.567Z" }
+    }
+  ]

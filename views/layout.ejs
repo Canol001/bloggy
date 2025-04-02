@@ -52,10 +52,15 @@
     </nav>
 
     <!-- Add padding to prevent content from being hidden behind the fixed navbar -->
-    <div class="pt-[80px]"> <!-- Added max-width for larger screens -->
+    <!-- <div class="pt-[80px] w-[90vw] max-w-[1300px]"> 
         <%- include(currentPage) %>
-    </div>
+    </div> -->
 
+    <div class="pt-[80px] flex justify-center">
+        <div class="w-[90vw] max-w-[1300px] pt-[80px]"> 
+            <%- include(currentPage) %>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="bg-gray-100 text-black mt-12 shadow-lg">
