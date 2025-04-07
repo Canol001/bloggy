@@ -1,11 +1,10 @@
 <!-- Articles Page -->
-<div class="max-w-6xl mx-auto p-6">
     <h1 class="text-4xl font-extrabold text-blue-700 text-center mb-6">Latest Articles</h1>
     
     <!-- Articles Grid -->
     <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <% articles.forEach(article => { %>
-            <div class="bg-white rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105">
+            <div class="overflow-hidden  transition-transform transform hover:scale-105">
                 <img src="<%= article.image %>" alt="Article Image" class="w-full h-40 object-cover">
                 <div class="p-4">
                     <h2 class="text-2xl font-semibold text-blue-600"><%= article.title %></h2>
@@ -16,4 +15,3 @@
             </div>
         <% }) %>
     </div>
-</div>
