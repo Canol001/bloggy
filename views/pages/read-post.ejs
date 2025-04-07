@@ -23,8 +23,13 @@
         </p>
 
         <!-- Code Snippet -->
-        <div class="bg-gray-900 text-white p-4 rounded-lg mt-6 overflow-x-auto">
-            <pre class="text-sm">
+<div class="relative bg-gray-900 text-white p-4 rounded-lg mt-6 overflow-x-auto">
+    <!-- Copy Button -->
+    <button onclick="copyCode(this)" class="absolute top-2 right-2 text-gray-300 hover:text-white text-lg" title="Copy code">
+        <i class="fi fi-rr-duplicate"></i>
+    </button>
+
+    <pre class="text-sm">
 <code class="language-python">
 # My daily content creation schedule
 def daily_routine():
@@ -36,8 +41,24 @@ def daily_routine():
 
 print(daily_routine())
 </code>
-            </pre>
-        </div>
+    </pre>
+</div>
+
+<script>
+    function copyCode(button) {
+        const code = button.parentElement.querySelector('code').innerText;
+        navigator.clipboard.writeText(code).then(() => {
+            button.innerHTML = '<i class="fi fi-rr-check"></i>'; // show check
+            setTimeout(() => {
+                button.innerHTML = '<i class="fi fi-rr-duplicate"></i>'; // revert to copy icon
+            }, 1500);
+        }).catch(err => {
+            console.error('Copy failed', err);
+            button.innerHTML = '<i class="fi fi-rr-cross-small"></i>'; // show error
+        });
+    }
+</script>
+
 
         <p class="text-lg text-gray-700 mt-6 text-justify">
             Scheduling my tasks like this ensures I stay productive and avoid burnout. The key is consistency.
@@ -58,17 +79,15 @@ print(daily_routine())
 </div>
 
 <!-- Recent Posts Section -->
-<div class="max-w-5xl mx-auto mt-12">
     <h2 class="text-3xl font-bold text-blue-700 mb-4 text-center">Recent Posts</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <% recentPosts.forEach(post => { %>
-            <div class="bg-transparent rounded-lg article">
-                <img src="<%= post.image %>" alt="Recent Post Image" class="w-full h-40 object-cover rounded-lg">
-                <div class="p-4">
-                    <h3 class="text-xl font-semibold mt-3 text-blue-600"><%= post.title %></h3>
-                    <p class="text-lg text-gray-500">By <%= post.author %></p>
-                </div>
-            </div>
+                <a href="/post/<%= post._id %>" class="block bg-transparent rounded-lg article hover:shadow-md transition-shadow">
+                    <img src="<%= post.image %>" alt="Recent Post Image" class="w-full h-40 object-cover rounded-lg">
+                    <div class="p-4">
+                        <h3 class="text-xl font-semibold mt-3 text-blue-600"><%= post.title %></h3>
+                        <p class="text-lg text-gray-500">By <%= post.author %></p>
+                    </div>
+                </a>
         <% }) %>
     </div>
-</div>
